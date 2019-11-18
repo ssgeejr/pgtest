@@ -1,6 +1,7 @@
 package sprint.digital.postgrest;
 
 import java.sql.*;
+import org.postgresql.Driver;
 
 public class ConnectionTest {
 	private boolean isLocal = false;
@@ -16,6 +17,7 @@ public class ConnectionTest {
 		Connection psqlConn = null;
 		StringBuffer result = new StringBuffer();
 		try {
+			Class.forName("org.postgresql.Driver");
 			psqlConn = DriverManager.getConnection("jdbc:postgresql://" + host + ":5432/postgres", "magicbox", "magicbox");
 			ResultSet rset = psqlConn.createStatement().executeQuery("select loc_type_nme,lat_long_nbr,enb_id from loc limit 5");
 			while(rset.next()) {
