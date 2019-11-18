@@ -12,16 +12,15 @@ public class ConnectionTest {
 		isLocal = isLocalTest;
 	}
 	
-	public String fetchResults() throws Exception{
+	public String fetchResults(String host) throws Exception{
 		Connection psqlConn = null;
 		StringBuffer result = new StringBuffer();
 		try {
-			psqlConn = DriverManager.getConnection("jdbc:postgresql://18.224.58.28:5432/postgres", "magicbox", "magicbox");
+			psqlConn = DriverManager.getConnection("jdbc:postgresql://" + host + ":5432/postgres", "magicbox", "magicbox");
 			ResultSet rset = psqlConn.createStatement().executeQuery("select loc_type_nme,lat_long_nbr,enb_id from loc limit 5");
 			while(rset.next()) {
-				if(isLocal)
-					System.out.println("loc_type_name [" + rset.getString("loc_type_nme") + "] lat_long_nbr [" + rset.getString("lat_long_nbr") + "] enb_id [" + rset.getString("enb_id") + "] ");
-				else
+				System.out.println("loc_type_name [" + rset.getString("loc_type_nme") + "] lat_long_nbr [" + rset.getString("lat_long_nbr") + "] enb_id [" + rset.getString("enb_id") + "] ");
+				if(!isLocal)
 					result.append("<tr><td>" + rset.getString("loc_type_nme") + "</td><td>" + rset.getString("lat_long_nbr") + "</td><td>" + rset.getString("enb_id") + "</td></tr>");
 			}
 			return result.toString();
@@ -36,7 +35,7 @@ public class ConnectionTest {
 
 	public static void main(String[] args) {
 		try {
-			new ConnectionTest(true).fetchResults();
+			new ConnectionTest(true).fetchResults("18.224.58.28");
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}

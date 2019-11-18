@@ -2,7 +2,7 @@
 <%
 String results = "";
 try{
-	results = new ConnectionTest().fetchResults();
+	results = new ConnectionTest().fetchResults("pgres");
 }catch(Exception ex){
 	out.println("<br><font color=red>" + ex.getMessage() + "</font><br>");
 }
